@@ -1,5 +1,5 @@
 1. Complete Customer 360
-MATCH (c:Customer {customerId:'C001'})
+MATCH (c:Customer {customerId:'C0001'})
 OPTIONAL MATCH (c)-[r]-(n)
 RETURN c,r,n
 
@@ -24,7 +24,7 @@ WHERE c1 <> c2
 RETURN path
 
 4. Related Customers Within 3 Hops
-MATCH p=(c:Customer {customerId:'C001'})-[*1..3]-(related)
+MATCH p=(c:Customer {customerId:'C0001'})-[*1..3]-(related)
 RETURN p
 
 This is one of the strongest Neo4j demo queries.
