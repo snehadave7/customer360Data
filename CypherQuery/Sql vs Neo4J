@@ -1,0 +1,20 @@
+Compare SQL vs Neo4j
+
+✅ Done
+
+Example:
+
+SQL
+
+SELECT *
+FROM Customer c
+JOIN Account a ON ...
+JOIN Customer_Address ca ON ...
+JOIN Address ad ON ...
+JOIN Customer_Phone cp ON ...
+JOIN Phone p ON ...
+
+Neo4j
+
+MATCH (c:Customer {customerId:'C001'})-[*1..2]-(n)
+RETURN c,n
