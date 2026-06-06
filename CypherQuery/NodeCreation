@@ -1,0 +1,89 @@
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/customer.csv'
+AS row
+
+CREATE (:Customer{
+    customerId: row.Customer_ID,
+    name: row.Name,
+    dob: row.DOB,
+    pan: row.PAN,
+    cif: row.CIF
+});
+
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/account.csv'
+AS row
+
+CREATE (:Account{
+    accountId: row.Account_ID,
+    accountType: row.Account_Type,
+    status: row.Status
+});
+
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/card.csv'
+AS row
+
+CREATE (:Card{
+    cardId: row.Card_ID,
+    cardType: row.Card_Type
+});
+
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/address.csv'
+AS row
+
+CREATE (:Address{
+    addressId: row.Address_ID,
+    addressLine: row.Address_Line,
+    city: row.City
+});
+
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/phone.csv'
+AS row
+
+CREATE (:Phone{
+    phoneId: row.Phone_ID,
+    phoneNumber: row.Phone_Number
+});
+
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/email.csv'
+AS row
+
+CREATE (:Email{
+    emailId: row.Email_ID,
+    email: row.Email
+});
+
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/transaction.csv'
+AS row
+
+CREATE (:Transaction{
+    txnId: row.Txn_ID,
+    amount: toInteger(row.Amount),
+    merchant: row.Merchant
+});
+
+
+
+-------
+Verify All Nodes
+
+After all imports:
+
+MATCH (n)
+RETURN labels(n), count(*)
+ORDER BY labels(n);
+
+Expected:
+
+Account       3
+Address       2
+Card          3
+Customer      3
+Email         3
+Phone         2
+Transaction   3
