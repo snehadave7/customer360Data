@@ -1,0 +1,4 @@
+Account_ID,Customer_ID,Account_Type,Status
+A1001,C001,Savings,Active
+A1002,C002,Current,Active
+A1003,C003,Savings,Active

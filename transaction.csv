@@ -1,0 +1,4 @@
+Txn_ID,Account_ID,Amount,Merchant
+T001,A1001,5000,Amazon
+T002,A1002,3000,Flipkart
+T003,A1003,7000,Amazon
