@@ -1,0 +1,105 @@
+1. Customer → Account (OWNS)
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/account.csv'
+AS row
+
+MATCH (c:Customer {customerId: row.Customer_ID})
+MATCH (a:Account {accountId: row.Account_ID})
+
+CREATE (c)-[:OWNS]->(a);
+
+Verify:
+MATCH p=(c:Customer)-[:OWNS]->(a:Account)
+RETURN p;
+
+2. Customer → Card (HAS_CARD)
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/card.csv'
+AS row
+
+MATCH (c:Customer {customerId: row.Customer_ID})
+MATCH (card:Card {cardId: row.Card_ID})
+
+CREATE (c)-[:HAS_CARD]->(card);
+
+Verify:
+MATCH p=(c:Customer)-[:HAS_CARD]->(card:Card)
+RETURN p;
+
+3. Customer → Address (LIVES_AT)
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/customer_address.csv'
+AS row
+
+MATCH (c:Customer {customerId: row.Customer_ID})
+MATCH (a:Address {addressId: row.Address_ID})
+
+CREATE (c)-[:LIVES_AT]->(a);
+
+Verify:
+MATCH p=(c:Customer)-[:LIVES_AT]->(a:Address)
+RETURN p;
+
+4. Customer → Phone (HAS_PHONE)
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/customer_phone.csv'
+AS row
+
+MATCH (c:Customer {customerId: row.Customer_ID})
+MATCH (p:Phone {phoneId: row.Phone_ID})
+
+CREATE (c)-[:HAS_PHONE]->(p);
+
+Verify:
+MATCH p=(c:Customer)-[:HAS_PHONE]->(ph:Phone)
+RETURN p;
+
+5. Customer → Email (HAS_EMAIL)
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/customer_email.csv'
+AS row
+
+MATCH (c:Customer {customerId: row.Customer_ID})
+MATCH (e:Email {emailId: row.Email_ID})
+
+CREATE (c)-[:HAS_EMAIL]->(e);
+
+Verify:
+MATCH p=(c:Customer)-[:HAS_EMAIL]->(e:Email)
+RETURN p;
+
+
+6. Account → Transaction (PERFORMED)
+LOAD CSV WITH HEADERS
+FROM 'https://raw.githubusercontent.com/snehadave7/customer360Data/main/transaction.csv'
+AS row
+
+MATCH (a:Account {accountId: row.Account_ID})
+MATCH (t:Transaction {txnId: row.Txn_ID})
+
+CREATE (a)-[:PERFORMED]->(t);
+
+Verify:
+MATCH p=(a:Account)-[:PERFORMED]->(t:Transaction)
+RETURN p;
+
+
+-----------------
+Final Verification
+
+Run:
+
+MATCH ()-[r]->()
+RETURN type(r), count(*)
+ORDER BY type(r);
+
+Expected:
+
+HAS_CARD     3
+HAS_EMAIL    3
+HAS_PHONE    3
+LIVES_AT     3
+OWNS         3
+PERFORMED    3
+
+Total = 18 relationships
