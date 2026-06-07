@@ -1,0 +1,266 @@
+1. Complete Customer 360
+MATCH (c:Customer {customerId:'C001'})
+OPTIONAL MATCH (c)-[r]-(n)
+RETURN c,r,n
+What it does
+
+First, Neo4j finds the customer whose ID is C001.
+
+MATCH (c:Customer {customerId:'C001'})
+
+Suppose that's John Smith.
+
+Then:
+
+OPTIONAL MATCH (c)-[r]-(n)
+
+means:
+
+Find every node connected to John Smith and every relationship connected to him.
+
+Examples:
+
+John Smith
+    |
+    +-- OWNS --> Account
+    |
+    +-- HAS_CARD --> Card
+    |
+    +-- LIVES_AT --> Address
+    |
+    +-- HAS_PHONE --> Phone
+    |
+    +-- HAS_EMAIL --> Email
+
+Finally:
+
+RETURN c,r,n
+
+returns the customer, relationship, and connected node.
+
+Business Value
+
+This gives a complete Customer 360 view from a single query.
+
+Demo Explanation
+
+This query starts with a customer and traverses all directly connected information such as accounts, cards, addresses, phones, and emails. Instead of joining
+multiple tables, Neo4j follows relationships directly.
+
+2. Customers Sharing the Same Address
+MATCH (c1:Customer)-[:LIVES_AT]->(a:Address)<-[:LIVES_AT]-(c2:Customer)
+WHERE c1.customerId <> c2.customerId
+RETURN c1.name,c2.name,a.addressLine
+What it does
+
+This pattern says:
+
+Customer1
+     |
+ LIVES_AT
+     |
+ Address
+     |
+ LIVES_AT
+     |
+Customer2
+
+Neo4j looks for:
+
+Customer A
+Address
+Customer B
+
+all connected to the same address.
+
+Example
+
+Suppose:
+
+John Smith -> ADD001
+Mary Smith -> ADD001
+
+Neo4j finds:
+
+John Smith <-- ADD001 --> Mary Smith
+Why WHERE clause?
+WHERE c1.customerId <> c2.customerId
+
+Without this condition:
+
+John Smith = John Smith
+
+would also appear.
+
+We only want different customers.
+
+Business Value
+Household identification
+Family grouping
+Relationship discovery
+Fraud investigation
+Demo Explanation
+
+This query identifies customers linked to the same address. In banking, this can help identify households, family members, or potentially suspicious relationships.
+
+3. Customers Sharing Phone Number
+MATCH (c1:Customer)-[:HAS_PHONE]->(p:Phone)<-[:HAS_PHONE]-(c2:Customer)
+WHERE c1 <> c2
+RETURN c1,c2,p
+What it does
+
+Looks for:
+
+Customer A
+      |
+ HAS_PHONE
+      |
+ Phone
+      |
+ HAS_PHONE
+      |
+Customer B
+Example
+John -> 9999999999
+Mark -> 9999999999
+
+Graph:
+
+John
+   \
+    9999999999
+   /
+Mark
+
+Neo4j immediately finds this relationship.
+
+Business Value
+Synthetic identity detection
+Mule account detection
+Fraud analysis
+Demo Explanation
+
+This query identifies customers sharing the same phone number. Such relationships may indicate legitimate family connections or potentially suspicious activity.
+
+4. Related Customers Within 3 Hops
+MATCH p=(c:Customer {customerId:'C001'})-[*1..3]-(related)
+RETURN p
+Most important query in the demo
+
+This demonstrates graph traversal.
+
+What does *1..3 mean?
+[*1..3]
+
+means:
+
+Find anything connected within:
+
+1 hop
+2 hops
+3 hops
+Example
+John
+ |
+Address
+ |
+Mary
+ |
+Phone
+ |
+David
+
+Neo4j traverses:
+
+John -> Address -> Mary
+
+(2 hops)
+
+and
+
+John -> Address -> Mary -> Phone
+
+(3 hops)
+
+Why is this powerful?
+
+In SQL:
+
+Customer
+JOIN Address
+JOIN Customer
+JOIN Phone
+
+multiple joins are needed.
+
+In Neo4j:
+
+[*1..3]
+
+handles traversal naturally.
+
+Business Value
+Network analysis
+Relationship discovery
+Fraud rings
+Connected customer groups
+Demo Explanation
+
+This query explores the customer's relationship network up to three levels deep. It helps uncover indirect connections that may not be visible through traditional 
+reporting.
+
+5. Most Connected Customers
+MATCH (c:Customer)
+RETURN c.name,size((c)--()) as connections
+ORDER BY connections DESC
+What it does
+
+Find all customers:
+
+MATCH (c:Customer)
+
+Count their connections:
+
+size((c)--())
+
+Example:
+
+John
+ |
+Account
+ |
+Card
+ |
+Phone
+ |
+Email
+ |
+Address
+
+Connections = 5
+
+Sort highest first:
+
+ORDER BY connections DESC
+Example Output
+Customer	Connections
+John Smith	5
+Mary Smith	4
+David Jones	3
+Business Value
+Influential customers
+Highly connected entities
+Fraud hotspot analysis
+Demo Explanation
+
+This query ranks customers based on the number of relationships they have in the graph. Highly connected customers often become important investigation points
+in customer analytics and fraud detection.
+
+One Question You Might Get
+"Why is Neo4j better than SQL here?"
+
+Answer:
+
+In a relational database, answering questions about shared addresses, shared phone numbers, or indirect customer relationships requires multiple joins across 
+many tables. As the network grows, those joins become increasingly complex. Neo4j stores relationships directly, so queries become simpler, more intuitive, 
+and faster for connected-data use cases like Customer 360, fraud detection, and relationship discovery.
