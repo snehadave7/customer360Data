@@ -1,0 +1,40 @@
+Slide 2: Neo4j Features & Comparison
+
+Title: Why Neo4j for Customer 360?
+
+Key Features
+
+✅ Native Graph Database
+
+✅ Cypher Query Language
+
+✅ Relationship-First Data Model
+
+✅ Interactive Visualization
+
+✅ Real-Time Traversal of Connections
+
+✅ Scalable for Complex Networks
+
+Neo4j vs Relational Database
+| Feature                      | Neo4j               | SQL Database          |
+| ---------------------------- | ------------------- | --------------------- |
+| Data Model                   | Graph               | Tables                |
+| Relationships                | Directly Stored     | Joins Required        |
+| Complex Relationship Queries | Very Fast           | Expensive Joins       |
+| Visualization                | Built-in Graph View | External Tools Needed |
+| Customer 360 Use Cases       | Excellent           | Moderate              |
+| Fraud/Network Analysis       | Excellent           | Complex               |
+
+Advantages for Customer 360
+Reduces complex joins
+Easy identification of hidden relationships
+Better visualization of customer networks
+Faster traversal across connected entities
+Flexible schema for evolving business requirements
+Sample Cypher Query
+MATCH (c:Customer {customerId:'C001'})
+OPTIONAL MATCH (c)-[r]-(n)
+RETURN c,r,n
+
+Outcome: Single query provides a complete customer-centric view of connected data.
