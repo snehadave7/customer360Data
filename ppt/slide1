@@ -1,0 +1,40 @@
+Slide 1: Customer 360 Use Case Using Neo4j
+
+Title: Customer 360 Graph Analytics with Neo4j
+
+Objective
+
+Create a unified view of customer information by connecting customers, addresses, products, orders, and interactions in a graph database.
+
+Data Source
+Sample datasets stored in GitHub
+Data imported into Neo4j using Cypher queries
+Nodes and relationships created to model customer connections
+Graph Model
+
+Nodes
+
+Customer
+Address
+Product
+Order
+
+Relationships
+
+CUSTOMER → LIVES_AT → ADDRESS
+CUSTOMER → PLACED → ORDER
+ORDER → CONTAINS → PRODUCT
+Key Use Cases Demonstrated
+Customer 360 View
+Customers sharing the same address
+Customer purchase history analysis
+Relationship-based data exploration
+Identification of connected entities and patterns
+Benefits
+Complete customer visibility
+Faster relationship analysis
+Intuitive graph visualization
+Efficient handling of connected data
+
+
+create the .pptx file directly for download. 
