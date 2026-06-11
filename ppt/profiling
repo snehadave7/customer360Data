@@ -1,0 +1,41 @@
+Purpose: Analyze query execution plans and identify performance bottlenecks.
+
+Neo4j Profiling Commands
+
+PROFILE
+MATCH (c:Customer {customerId:'C001'})
+RETURN c
+
+or
+
+EXPLAIN
+MATCH (c:Customer {customerId:'C001'})
+RETURN c
+
+What Profiling Helps Identify
+
+Node Scans
+Index Seeks
+Relationship Traversals
+Query Cost
+Memory Usage
+
+Expected Optimization Goal
+
+❌ Before Optimization
+
+NodeByLabelScan
+
+✅ After Optimization
+
+NodeIndexSeek
+
+Benefits
+
+Validates index usage
+Detects inefficient queries
+Improves performance at scale
+Supports production readiness
+Key Takeaway
+
+Indexing accelerates node discovery, while Profiling validates query efficiency. Together, they are the primary strategies for ensuring Neo4j performance as the graph scales from 1K to 100K+ nodes.
